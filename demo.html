@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<meta charset="UTF-8"/>
+<title>Perfect Tooltip demo</title>
+<link rel="stylesheet" type="text/css" href="tooltip.css">
+<link rel="stylesheet" type="text/css" href="demo.css">
+
+<h1>Perfect Tooltip - demo</h1>
+
+<h2>Features</h2>
+<ul>
+	<li>Creates a simple tooltip on <b>any html element</b> that matches the given <b>selector</b> (jQuery array)
+	<li>It can either convert a <b>"title"</b> attribute of the element or add a user-defined text
+	<li>It will be <b>automatically destroyed</b> (removed from DOM) when the target element is removed
+	<li>It will automatically <b>adjust</b> its <b>position</b> to stay on screen (unless specified differently)
+	<li>It can be set to the one of the <b>12</b> different positions relatively to a target
+	<li>It can show up <b>on</b> mouse <b>hover</b> (default) or on <b>click</b>
+	<li>It hides when you move mouse out of the target (default)
+	<li>It can also stay on screen when you move mouse over the tooltip (to allow selecting its text)
+	<li>It can show immediately or after a specified delay
+	<li>It can have any html content (images, links, etc.)
+	<li>Fully customizable with <b>CSS</b>
+	<li>It's jQuery <b>chainable</b>
+</ul>
+
+<h2>Basic usage</h2>
+<pre>
+$(<span class="keyword">function</span>(){
+    $('<span class="string">#button1</span>').tooltip();                               <span class="comment">// convert "title" attribute to a tooltip</span>
+    $('<span class="string">#button2</span>').tooltip('<span class="string">Button 2 tooltip text</span>');        <span class="comment">// show custom text</span>
+});
+</pre>
+<button id="button1" title="Button 1 tooltip text">Button1</button>
+<button id="button2">Button2</button>
+
+<h2>Advanced settings</h2>
+<pre>
+$(<span class="keyword">function</span>(){
+    $('<span class="string">#button3</span>').tooltip({ position: '<span class="string">tr</span>' });
+    $('<span class="string">#button4</span>').tooltip({ position: '<span class="string">bl</span>' });
+    $('<span class="string">#button5</span>').tooltip({ position: '<span class="string">r</span>' });
+    $('<span class="string">#button6</span>').tooltip({ position: '<span class="string">t</span>', showOnClick: <span class="keyword">true</span> });
+    $('<span class="string">#button7</span>').tooltip({ position: '<span class="string">t</span>', dontHideOnTooltipHover: <span class="keyword">true</span> });
+    $('<span class="string">#button8</span>').tooltip({ position: '<span class="string">l</span>', showDelay: <span class="sting">1000</span> });
+});
+</pre>
+<button id="button3" title="On the top-right">Button3</button>
+<button id="button4" title="On the bottom-left">Button4</button>
+<button id="button5" title="On the right">Button5</button>
+<button id="button6" title="On the top, show on click">Button6</button>
+<button id="button7" title="On the top, dont hide on tooltip hover">Button7</button>
+<button id="button8" title="On the left, show with delay">Button8</button>
+
+
+
+<script src="jquery-1.7.1.min.js"></script>
+<script src="tooltip.js"></script>
+<script>
+$(function(){
+    $('#button1').tooltip();										// convert "title" attribute to a tooltip
+    $('#button2').tooltip('Button 2 tooltip text');					// show custom text
+	
+    $('#button3').tooltip({ position: 'tr' });
+    $('#button4').tooltip({ position: 'bl' });
+    $('#button5').tooltip({ position: 'r' });
+    $('#button6').tooltip({ position: 't', showOnClick: true });
+    $('#button7').tooltip({ position: 't', dontHideOnTooltipHover: true });
+    $('#button8').tooltip({ position: 'l', showDelay: 1000 });
+});
+</script>
