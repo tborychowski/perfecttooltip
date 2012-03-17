@@ -23,5 +23,5 @@ This is the Perfect Tooltip - a jQuery plugin
         $('#button2').tooltip('Button 2 tooltip text');   // show custom text
     });
 
-[DEMO](https://github.com/Herhor/perfecttooltip)
+[See DEMO here](http://herhor.github.com/perfecttooltip)
 
