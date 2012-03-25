@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <title>Perfect Tooltip demo</title>
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="tooltip.css">
 <style type="text/css">
 	body { margin:0; padding: 20px 20px 100px; background: #f9f9f9; font: 90% helvetica, arial, sans-serif; line-height: 1.6; }
@@ -16,10 +17,16 @@
     .download { float: right; margin-right: 100px; }
     .footer { text-align:center; padding-top:30px; font-style: italic; }
 	
-	.big-tooltip { text-align: left; padding: 7px 5px; }
+	
+	.buttons { margin: 20px; }
+	.buttons button { margin: 15px; }
+	.custom-tooltip { background: orange; border-radius: 3px; color: #000; box-shadow: 0 2px 5px 3px rgba(0,0,0,0.4); font-weight: normal; font-size: 14px; padding: 5px 15px; }
+	.custom-tooltip:before { border-color: orange;  } /* tip color */
+	
+	.big-tooltip { text-align: left; padding: 10px 18px; font-weight: normal; }
 	.big-tooltip h2 { color: #fff; margin: 0 0 5px; }
 	.big-tooltip p { color: #ccc; margin: 0; line-height: 1.4; }
-	.big-tooltip p a { color: #fff; }
+	.big-tooltip p a { color: #fff; text-decoration: underline; }
 	.big-tooltip p a:hover { text-decoration: none; }
 </style>
 </head>
@@ -44,7 +51,7 @@
 	<li>It's jQuery <b>chainable</b>
 </ul>
 
-<h2>Basic usage</h2>
+<h2>Usage</h2>
 <pre>
 $(<span class="keyword">function</span>(){
     $('<span class="string">#button1</span>').tooltip();                               <span class="comment">// convert "title" attribute to a tooltip</span>
@@ -52,15 +59,6 @@ $(<span class="keyword">function</span>(){
     $('<span class="string">#button3</span>')                                          <span class="comment">// show html</span>
 		.tooltip('<span class="string">&lt;div class=&quot;big-tooltip&quot;&gt;&lt;h2&gt;Tooltip title&lt;/h2&gt;&lt;p&gt;Tooltip description&lt;/p&gt;&lt;/div&gt;</span>');
 	
-});
-</pre>
-<button id="button1" title="Button 1 tooltip text">Button1</button>
-<button id="button2">Button2</button>
-<button id="button3">Button3</button>
-
-<h2>Advanced settings</h2>
-<pre>
-$(<span class="keyword">function</span>(){
     $('<span class="string">#button4</span>').tooltip({ position: '<span class="string">tr</span>' });
     $('<span class="string">#button5</span>').tooltip({ position: '<span class="string">bl</span>' });
     $('<span class="string">#button6</span>').tooltip({ position: '<span class="string">r</span>' });
@@ -78,13 +76,22 @@ $(<span class="keyword">function</span>(){
     });
 });
 </pre>
-<button id="button4" title="On the top-right">Button4</button>
-<button id="button5" title="On the bottom-left">Button5</button>
-<button id="button6" title="On the right">Button6</button>
-<button id="button7" title="On the top, show on click">Button7</button>
-<button id="button8" title="On the top, dont hide on tooltip hover">Button8</button>
-<button id="button9" title="On the left, show with delay">Button9</button>
-<button id="button10">Button10</button>
+
+<div class="buttons">
+	<button class="btn btn-primary" id="button1" title="Button 1 tooltip text">default position, convert title to tooltip</button>
+	<button class="btn btn-danger" id="button2">default position, custom text</button>
+	<button class="btn btn-info" id="button3">default position, html tooltip</button>
+	<button class="btn btn-inverse" id="button4" title="On the top-right">position top-right with no animation</button>
+	<button class="btn btn-warning" id="button5" title="On the bottom-left">position bottom-left, custom css class</button>
+	<button class="btn btn-danger" id="button6" title="On the right">position right, html content, long animation</button>
+	<button class="btn btn-info" id="button7" title="On the top, show on click">position top, show on click</button>
+	<button class="btn btn-success" id="button8" title="On the top, dont hide on tooltip hover">position top, don't hide when hovering the tooltip</button>
+	<button class="btn btn-primary" id="button9" title="On the left, show with delay">position left, show with 1000ms delay</button>
+	<button class="btn btn-inverse" id="button10">position top, html content, don't hide on tooltip hover</button>
+	<button class="btn btn-success" id="button11">position left-top, html content</button>
+	<button class="btn btn-warning" id="button12">position right-bottom, html content</button>
+</div>
+
 
 <h2>Download</h2>
 <p>
@@ -103,22 +110,21 @@ $(<span class="keyword">function</span>(){
 <script src="tooltip.js"></script>
 <script>
 $(function(){
-    $('#button1').tooltip();										// convert "title" attribute to a tooltip
-    $('#button2').tooltip('Button 2 tooltip text');					// show custom text
-    $('#button3')													// show html
-		.tooltip('<div class="big-tooltip"><h2>Tooltip title</h2><p>Tooltip description</p></div>');
-	
-    $('#button4').tooltip({ position: 'tr' });
-    $('#button5').tooltip({ position: 'bl' });
-    $('#button6').tooltip({ position: 'r' });
-    $('#button7').tooltip({ position: 't', showOnClick: true });
+	var html1 = '<h2>Tooltip title</h2><p>Tooltip description</p>',
+		html2 = '<h2>Tooltip title</h2><p>A very loong tooltip description text<br> with multiple lines<br>and some links: <a href="#">Link</a></p>';
+		
+    $('#button1').tooltip();																		// convert "title" attribute to a tooltip
+    $('#button2').tooltip('Button 2 tooltip text');													// show custom text
+    $('#button3').tooltip(html1);																	// show html	
+    $('#button4').tooltip({ position: 'tr', animate: 0 });											// position top-right, no animation
+    $('#button5').tooltip({ position: 'bl', cls: 'custom-tooltip' });								// position bottom-left, custom css class
+    $('#button6').tooltip({ position: 'r', animate: 1000, text: html1, cls: 'big-tooltip' });		// position right, html content, long animation
+    $('#button7').tooltip({ position: 't', trigger: 'click' });										// position top, show on click
     $('#button8').tooltip({ position: 't', dontHideOnTooltipHover: true });
-    $('#button9').tooltip({ position: 'l', showDelay: 1000 });
-    $('#button10').tooltip({ 
-		position: 't', 
-		dontHideOnTooltipHover: true, 
-		text: '<div class="big-tooltip"><h2>Tooltip title</h2><p>A very loong tooltip description text<br> with multiple lines<br>and some links: <a href="#">Link</a></p></div>' 
-	});
+    $('#button9').tooltip({ position: 'l', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', showDelay: 1000 });// position left, show with 1000ms delay
+    $('#button10').tooltip({ position: 't', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
+    $('#button11').tooltip({ position: 'lt', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
+    $('#button12').tooltip({ position: 'rb', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
 });
 </script>
 </body>

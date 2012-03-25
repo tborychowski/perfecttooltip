@@ -16,40 +16,66 @@
  *    position {String}					tooltip position in relation to the target (selector) it can be 1 of the following: 
  *                              		- 'auto' or 'default' (or not set) to auto calculate the position
  *                              		- tl, t, tr, bl, b, br, lt, l, lb, rt, r, rb - to force a particular position
- *    showOnClick {Bool}			show the tooltip on Click instead of mouse hover
+ *    animate {Bool|Int}			animate fadeIn/Out, defaults to false (IE always false), it can be also an anim speed in milisec
+ *    trigger {String}				show tooltip event listener [hover|click|manual], defaults to 'hover'
+ *    showDelay {int}				delay showing the tooltip for x miliseconds, defaults to 100
  *    dontHideOnTooltipHover {Bool}	don't hide the tooltip when mouse is over it
- *    showDelay {int}				delay showing the tooltip for x miliseconds
  * @returns							a tooltip instance
  */
  
-;(function($){ $.fn.tooltip = function(conf){
+;(function($){ $.fn.tooltip = function(options){
+	var config = {}, 
+		defaults = { 
+			text: '',
+			cls: '',
+			position: 'default', 
+			animate: false,
+			trigger: 'hover',
+			showDelay: 300,
+			dontHideOnTooltipHover: false
+		};
+	options = options || {};
+	if (typeof options === 'string' && options !== '_destroy') options = { text: options };			// if just text given - make it a text
+	if (typeof options.showDelay !== 'number') delete options.showDelay;							// if not number - remove and use default
+	$.extend(config, defaults, options);
+
+	
 	var Tooltip = function(conf){
+		// cache references to frequently used objects
 		this.conf = conf;
 		this.target = this.conf.target;
 		this.win = $(window);
 		this.doc = $(document);
-		this.animSpeed = navigator.userAgent.match(/msie/i)?0:200;									// don't animate in IE
-		this.screenMargin = 0;
+		this.animSpeed = 0;
 		this.targetDistance = 7;
+		this.screenMargin = 0;
+		
+		if (!navigator.userAgent.match(/msie/i) && this.conf.animate){								// don't animate in IE, else show as in conf
+			this.animSpeed = (typeof this.conf.animate == 'number' ? this.conf.animate : 300);
+		}
 		
 		var self = this, 
 			timestamp = +new Date(), 
 			tooltipId = 'tooltip'+timestamp, 
 			eventNS = '.tooltip',
-			showEvent = (this.conf.showOnClick===true?'click':'mouseenter')+eventNS;
+			showEvent = 'mouseenter';
+		
+		if (typeof this.conf.trigger === 'string'){
+			showEvent = (this.conf.trigger == 'hover' ? 'mouseenter' : this.conf.trigger);
+		}
 		
 		if (this.conf.text) this.text = this.conf.text;												// tooltip from config
 		else if (this.target[0] && this.target[0].title) this.text = this.target[0].title;			// tooltip from title
 		else return null;
 		
-		this.target.tooltip('_destroy');															// destroy previous tooltip if any
+		//this.target.tooltip('_destroy');															// destroy previous tooltip if any
+		this.destroy();
+		
 		this.target.attr('title', this.text);
-		this.tooltip = $('<div id="'+tooltipId+'" class="tooltip">'+this.text+'</div>')
-			.appendTo('body')
-			.hide();	
+		this.tooltip = $('<div id="'+tooltipId+'">'+this.text+'</div>').appendTo('body').hide();	
 		
 		if (this.target.length) this.target.data('tooltipId', tooltipId).off(eventNS)				// clean old listeners
-			.on(showEvent, function(e){self.show.call(self,e,this);})								// add new ones
+			.on(showEvent+eventNS, function(e){self.show.call(self,e,this);})						// add new ones
 			.on('mouseleave'+eventNS, function(e){self.hide.call(self,e,this);})
 			.on('destroyed'+eventNS, function(){ self.destroy.call(self); });
 			
@@ -66,20 +92,21 @@
 			}
 			this.target[0].title="";
 		}
-		if (this.tooltip.is(':hidden')) {
+		if (this.tooltip.is(':hidden')){
 			this.align()
 				.fadeTo(0,0)
 				.show()
 				.clearQueue()
 				.stop()
-				.delay(this.conf.showDelay || 0)
-				.fadeTo(this.animSpeed,1);
+				.delay(this.conf.showDelay)
+				.fadeTo(this.animSpeed,1, $.proxy(this.align, this));								// re-align after show
 		}
 		else this.align().clearQueue().stop().fadeTo(this.animSpeed,1); 
 	};
 	Tooltip.prototype.hide = function(){ 
-		var self = this;
-		this.tooltip.clearQueue().stop().fadeTo(this.animSpeed,0,function(){
+		var self = this, 
+			animSpeed = (this.conf.dontHideOnTooltipHover?this.animSpeed+100:this.animSpeed);
+		this.tooltip.clearQueue().stop().fadeTo(animSpeed,0,function(){
 			self.tooltip.hide();
 			if (self.target&&self.target.length)self.target[0].title=self.text;
 		}); 
@@ -135,7 +162,7 @@
 			}		
 		}	
 		
-		var cls = ['tooltip', 'tooltip-'+position[0]];												// position the tooltip
+		var cls = ['tooltip', (this.conf.cls || ''), 'tooltip-'+position[0]];						// position the tooltip
 		switch(position[0]){
 			case 't' : tooltip.top = target.t - tooltip.h - this.targetDistance; break;
 			case 'b' : tooltip.top = target.b + this.targetDistance; break;
@@ -153,19 +180,24 @@
 		}	
 		return this.tooltip.attr('class', cls.join(' ')).css(tooltip);
 	};
+	
+	
 	Tooltip.prototype.destroy = function(){
 		if(this.target)this.target.off('.tooltip');
 		if(this.tooltip)this.tooltip.remove();
 	};
 
+	
 	return $(this).each(function(){
-		var element = $(this), opt = { target: element, position: 'default' };
-		if (typeof conf === 'string') opt.text = conf; else $.extend(opt, conf);
-		if (conf === '_destroy'){
+		var element = $(this);
+		if (options === '_destroy'){
 			$('#'+element.data('tooltipId')).remove();												// remove tooltips
 			element.off('.tooltip').removeData('tooltipId');										// remove event listeners from targets
 		}
-		else new Tooltip(opt);
+		else {
+			config.target = element;
+			new Tooltip(config);
+		}
 	});
 };})(jQuery);
 
