@@ -21,13 +21,13 @@
 
 /* tooltip to the right of the target, tip arrow left */
 .tooltip-r:before	{ border-right-color: rgba(20,20,20,.9); border-left-width: 0; left: -7px; margin-top: -7px; top: 50%; }
-.tooltip-rt:before	{ border-right-color: rgba(31,31,31,.9); margin: 0; top: 7px; }
-.tooltip-rb:before	{ border-right-color: rgba(10,10,10,.9); margin: 0; top: auto; bottom: 7px; }
+.tooltip-rt:before	{ border-right-color: rgba(10,10,10,.9); margin: 0; top: auto; bottom: 7px; }
+.tooltip-rb:before	{ border-right-color: rgba(31,31,31,.9); margin: 0; top: 7px; }
 
 /* tooltip to the left of the target, tip arrow right */
 .tooltip-l:before	{ border-left-color: rgba(20,20,20,.9); border-right-width: 0; right: -7px; margin-top: -7px; top: 50%; }
-.tooltip-lt:before	{ border-left-color: rgba(31,31,31,.9); margin: 0; top: 7px; }
-.tooltip-lb:before	{ border-left-color: rgba(10,10,10,.9); margin: 0; top: auto; bottom: 7px; }
+.tooltip-lt:before	{ border-left-color: rgba(10,10,10,.9); margin: 0; top: auto; bottom: 7px; }
+.tooltip-lb:before	{ border-left-color: rgba(31,31,31,.9); margin: 0; top: 7px; }
 
 /* force transparent borders where needed */
 .tooltip-t:before, .tooltip-b:before { border-left-color: transparent !important; border-right-color: transparent !important; }
