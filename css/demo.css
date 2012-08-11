@@ -12,9 +12,9 @@ ul li { margin: 0 0 5px 0; }
 .custom-tooltip:before { border-color: orange;  } /* tip color */
 
 .big-tooltip { text-align: left; padding: 10px 18px; font-weight: normal; }
-.big-tooltip h2 { color: #fff; margin: 0 0 5px; }
-.big-tooltip p { color: #ccc; margin: 0; line-height: 1.4; }
-.big-tooltip p a { color: #fff; text-decoration: underline; }
+.big-tooltip h2 { color: #333; margin: 0 0 5px; }
+.big-tooltip p { color: #666; margin: 0; line-height: 1.4; }
+.big-tooltip p a { color: #333; text-decoration: underline; }
 .big-tooltip p a:hover { text-decoration: none; }
 pre { background: #fff; }
 

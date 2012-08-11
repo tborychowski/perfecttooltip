@@ -1,0 +1,49 @@
+@img-base: "../img";
+@icon-base: "../img/icons";
+
+
+.shadow(@a, @b, @c){ -moz-box-shadow: @a,@b,@c; -webkit-box-shadow: @a,@b,@c; box-shadow: @a,@b,@c; }
+.shadow(@a, @b){ -moz-box-shadow: @a,@b; -webkit-box-shadow: @a,@b; box-shadow: @a,@b; }
+.shadow(@a){ -moz-box-shadow: @arguments; -webkit-box-shadow: @arguments; box-shadow: @arguments; }
+
+.sizing(@type: border-box){ -moz-box-sizing: @type; -webkit-box-sizing: @type; box-sizing: @type; }
+
+.radius (@radius: 3px){ 
+	-moz-border-radius: @radius; -webkit-border-radius: @radius; border-radius: @radius;
+	-moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box;
+}
+
+.bgclip-padding() { -moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box; }
+.bgclip-border() { -moz-background-clip: border-box; -webkit-background-clip: border-box; background-clip: border-box; }
+
+.padding-clip() { -moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box; }
+.border-clip() { -moz-background-clip: border-box; -webkit-background-clip: border-box; background-clip: border-box; }
+
+.rotate (@deg: 0){ -webkit-transform: rotate(~"@{deg}deg");	-moz-transform: rotate(~"@{deg}deg"); transform: rotate(~"@{deg}deg"); }
+
+
+.gradient (@from, @mid, @to) {
+	background: @mid;
+	background: -webkit-linear-gradient(top, @from, @mid, @to); 
+	background: -moz-linear-gradient(top, @from, @mid, @to); 
+	background: linear-gradient(top, @from, @mid, @to);
+}
+.gradient (@from, @to) {
+	background: @from;			/* for IE */
+	background: -webkit-linear-gradient(top,@from,@to);
+	background: -moz-linear-gradient(top,@from,@to);
+	background: linear-gradient(top,@from,@to);
+}
+
+
+.transition(){ -moz-transition: all .2s ease-out; -webkit-transition: all .2s ease-out; transition: all .2s ease-out; }
+.transition(@a){ -moz-transition: @arguments; -webkit-transition: @arguments; transition: @arguments; }
+
+.non-selectable() { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default; }
+
+
+.bgimg(@img, @x: 0, @y: 0, @repeat: no-repeat){ background: url("@{img-base}/@{img}") @x @y @repeat; }
+.bgicon(@img, @x: 0, @y: 0, @repeat: no-repeat){ background: url("@{icon-base}/@{img}") @x @y @repeat; }
+
+.bgimgc(@col, @img, @x: 0, @y: 0, @repeat: no-repeat){ background: @col url("@{img-base}/@{img}") @x @y @repeat; }
+.bgiconc(@col, @img, @x: 0, @y: 0, @repeat: no-repeat){ background: @col url("@{icon-base}/@{img}") @x @y @repeat; }

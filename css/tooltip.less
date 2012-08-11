@@ -1,0 +1,39 @@
+@import "_lib.less";
+
+
+@tooltip-bg: #fff;
+@tip-size: 5px;
+
+
+.tooltip { position: absolute; z-index: 999; min-width: 40px; white-space: nowrap; cursor: default; left: -1000; top: -1000; 
+	padding: 8px 15px; font: 15px helvetica, tahoma, sans-serif; text-align: center; color: #555; 
+	background: @tooltip-bg; .sizing; .padding-clip; .radius(3px); .shadow(0 0 2px 1px rgba(0,0,0,.4));
+}
+
+.tooltip:before { content: ''; display: block; position: absolute; width: 0; height: 0; border: @tip-size solid transparent; }
+
+.tooltip-t:before, .tooltip-b:before,
+.tooltip-l:before, .tooltip-r:before { border-right: @tip-size solid @tooltip-bg; border-bottom: @tip-size solid @tooltip-bg; .shadow(1px 1px 1px rgba(0,0,0,.4)); }
+
+.tooltip-t:before, .tooltip-b:before { left: 50%; }
+.tooltip-l:before, .tooltip-r:before { top: 50%;  }
+
+.tooltip-t:before { .rotate(45);	margin-left: -@tip-size; bottom: -@tip-size; }
+.tooltip-r:before { .rotate(135);	margin-top: -@tip-size;  left:   -@tip-size; }
+.tooltip-b:before { .rotate(-135);	margin-left: -@tip-size; top:    -@tip-size; }
+.tooltip-l:before { .rotate(-45);	margin-top: -@tip-size;  right:  -@tip-size; }
+
+.tooltip-tl:before, .tooltip-bl:before { left: auto; right: @tip-size; }
+.tooltip-rt:before, .tooltip-lt:before { top: auto; bottom: @tip-size; }
+.tooltip-tr:before, .tooltip-br:before { left: @tip-size; }
+.tooltip-rb:before, .tooltip-lb:before { top: @tip-size; }
+.tooltip-tr:before, .tooltip-tl:before, .tooltip-br:before, .tooltip-bl:before, 
+.tooltip-rt:before, .tooltip-rb:before, .tooltip-lt:before, .tooltip-lb:before { margin: 0; }
+
+
+
+.test-table { border-collapse: collapse; 
+	td { border: 1px solid #ccc; padding: 20px; }
+	.tt-wrapper { position: relative; }
+	.tooltip { position: relative; }
+}
