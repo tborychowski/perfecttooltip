@@ -19,7 +19,11 @@
 .padding-clip() { -moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box; }
 .border-clip() { -moz-background-clip: border-box; -webkit-background-clip: border-box; background-clip: border-box; }
 
-.rotate (@deg: 0){ -webkit-transform: rotate(~"@{deg}deg");	-moz-transform: rotate(~"@{deg}deg"); transform: rotate(~"@{deg}deg"); }
+.rotate (@deg: 0){ 
+	-webkit-transform: rotate(~"@{deg}deg") translateZ(1px);	/* translateZ added for smoothing and Fx border space bug */
+	-moz-transform: rotate(~"@{deg}deg") translateZ(1px); 
+	transform: rotate(~"@{deg}deg") translateZ(1px); 
+}
 
 
 .gradient (@from, @mid, @to) {
