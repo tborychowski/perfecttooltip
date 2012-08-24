@@ -33,7 +33,7 @@
 	background: linear-gradient(top, @from, @mid, @to);
 }
 .gradient (@from, @to) {
-	background: @from;			/* for IE */
+	background: mix(@from, @to, 50%); /* for IE */  
 	background: -webkit-linear-gradient(top,@from,@to);
 	background: -moz-linear-gradient(top,@from,@to);
 	background: linear-gradient(top,@from,@to);
@@ -43,7 +43,15 @@
 .transition(){ -moz-transition: all .2s ease-out; -webkit-transition: all .2s ease-out; transition: all .2s ease-out; }
 .transition(@a){ -moz-transition: @arguments; -webkit-transition: @arguments; transition: @arguments; }
 
-.non-selectable() { -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; cursor: default; }
+.non-selectable { 
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: default; 
+}
 
 
 .bgimg(@img, @x: 0, @y: 0, @repeat: no-repeat){ background: url("@{img-base}/@{img}") @x @y @repeat; }
