@@ -175,10 +175,10 @@
 		if (position[1]){
 			cls.push('tooltip-'+position[0]+position[1]);
 			switch(position[1]){
-				case 't' : tooltip.top	= target.b - tooltip.h - target.h/2 + 14;	break;
-				case 'b' : tooltip.top	= target.t + target.h/2 - 14; 				break;
-				case 'r' : tooltip.left	= target.l + target.w/2 - 14;				break;
-				case 'l' : tooltip.left	= target.r - tooltip.w - target.w/2 + 14;	break;
+				case 't' : tooltip.top	= target.b - tooltip.h - target.h/2 + 10;	break;
+				case 'b' : tooltip.top	= target.t + target.h/2 - 10; 				break;
+				case 'r' : tooltip.left	= target.l + target.w/2 - 10;				break;
+				case 'l' : tooltip.left	= target.r - tooltip.w - target.w/2 + 10;	break;
 			}
 		}	
 		this.tooltip.attr('class', cls.join(' ')).css(tooltip);
