@@ -1,4 +1,4 @@
-﻿body { margin:0; padding: 20px; background: #f0f0f0; font: 90% helvetica, arial, sans-serif; line-height: 1.6; }
+body { margin:0; padding: 20px; background: #f0f0f0; font: 90% helvetica, arial, sans-serif; line-height: 1.6; }
 h1 { font-size: 1.5em; margin: 0; }
 h2 { font-size: 1.3em; margin: 20px 0 10px 0; }
 ul { font-size: .9em; line-height: 1.5; margin: 0 0 0 20px; }
@@ -12,9 +12,9 @@ ul li { margin: 0 0 5px 0; }
 .custom-tooltip:before { border-color: orange;  } /* tip color */
 
 .big-tooltip { text-align: left; padding: 10px 18px; font-weight: normal; }
-.big-tooltip h2 { color: #333; margin: 0 0 5px; }
-.big-tooltip p { color: #666; margin: 0; line-height: 1.4; }
-.big-tooltip p a { color: #333; text-decoration: underline; }
+.big-tooltip h2 { color: #fff; margin: 0 0 5px; }
+.big-tooltip p { color: #eee; margin: 0; line-height: 1.4; }
+.big-tooltip p a { color: #ccc; text-decoration: underline; }
 .big-tooltip p a:hover { text-decoration: none; }
 pre { background: #fff; }
 
