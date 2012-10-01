@@ -1,56 +1,94 @@
+/**
+ * LESS mix-in library
+ * vendor prefixes verified with prefixr.com and caniuse.com [2012-09-28]
+ * https://gist.github.com/3798764
+ */
+
 @img-base: "../img";
 @icon-base: "../img/icons";
 
 
-.shadow(@a, @b, @c){ -moz-box-shadow: @a,@b,@c; -webkit-box-shadow: @a,@b,@c; box-shadow: @a,@b,@c; }
-.shadow(@a, @b){ -moz-box-shadow: @a,@b; -webkit-box-shadow: @a,@b; box-shadow: @a,@b; }
-.shadow(@a){ -moz-box-shadow: @arguments; -webkit-box-shadow: @arguments; box-shadow: @arguments; }
 
-.sizing(@type: border-box){ -moz-box-sizing: @type; -webkit-box-sizing: @type; box-sizing: @type; }
+.shadow(@a, @b, @c){ -webkit-box-shadow: @a,@b,@c; box-shadow: @a,@b,@c; }
+.shadow(@a, @b){ -webkit-box-shadow: @a,@b; box-shadow: @a,@b; }
+.shadow(@a){ -webkit-box-shadow: @arguments; box-shadow: @arguments; }
 
-.radius (@radius: 3px){ 
-	-moz-border-radius: @radius; -webkit-border-radius: @radius; border-radius: @radius;
-	-moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box;
+.border-box(){
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-.bgclip-padding() { -moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box; }
-.bgclip-border() { -moz-background-clip: border-box; -webkit-background-clip: border-box; background-clip: border-box; }
+.clip(@type: padding) { -moz-background-clip: @type; -webkit-background-clip: @type; -ms-background-clip: @type; background-clip: ~"@{type}-box"; }
 
-.padding-clip() { -moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box; }
-.border-clip() { -moz-background-clip: border-box; -webkit-background-clip: border-box; background-clip: border-box; }
+.radius (@radius: 3px){
+	border-radius: @radius;
+	-webkit-background-clip: padding-box;
+	-moz-background-clip: padding-box;
+	.clip(padding);
+}
 
-.rotate (@deg: 0){ 
+
+.rotate (@deg: 0){
 	-webkit-transform: rotate(~"@{deg}deg") translateZ(1px);	/* translateZ added for smoothing and Fx border space bug */
-	-moz-transform: rotate(~"@{deg}deg") translateZ(1px); 
-	transform: rotate(~"@{deg}deg") translateZ(1px); 
+	-moz-transform: rotate(~"@{deg}deg") translateZ(1px);
+	-o-transform: rotate(~"@{deg}deg") translateZ(1px);
+	-ms-transform: rotate(~"@{deg}deg") translateZ(1px);
+	transform: rotate(~"@{deg}deg") translateZ(1px);
 }
 
+.skew (@deg: 0){
+	-webkit-transform: skew(~"@{deg}deg") translateZ(1px);	/* translateZ added for smoothing and Fx border space bug */
+	-moz-transform: skew(~"@{deg}deg") translateZ(1px);
+	-o-transform: skew(~"@{deg}deg") translateZ(1px);
+	-ms-transform: skew(~"@{deg}deg") translateZ(1px);
+	transform: skew(~"@{deg}deg") translateZ(1px);
+}
 
 .gradient (@from, @mid, @to) {
 	background: @mid;
-	background: -webkit-linear-gradient(top, @from, @mid, @to); 
-	background: -moz-linear-gradient(top, @from, @mid, @to); 
+	background: -webkit-linear-gradient(top, @from, @mid, @to);
+	background: -moz-linear-gradient(top, @from, @mid, @to);
+	background: -o-linear-gradient(top, @from, @mid, @to);
+	background: -ms-linear-gradient(top, @from, @mid, @to);
 	background: linear-gradient(top, @from, @mid, @to);
 }
+
 .gradient (@from, @to) {
-	background: mix(@from, @to, 50%); /* for IE */  
-	background: -webkit-linear-gradient(top,@from,@to);
-	background: -moz-linear-gradient(top,@from,@to);
-	background: linear-gradient(top,@from,@to);
+	background: mix(@from, @to, 50%); /* for IE */
+	background: -webkit-linear-gradient(top, @from, @to);
+	background: -moz-linear-gradient(top, @from, @to);
+	background: -o-linear-gradient(top, @from, @to);
+	background: -ms-linear-gradient(top, @from, @to);
+	background: linear-gradient(top, @from, @to);
 }
 
 
-.transition(){ -moz-transition: all .2s ease-out; -webkit-transition: all .2s ease-out; transition: all .2s ease-out; }
-.transition(@a){ -moz-transition: @arguments; -webkit-transition: @arguments; transition: @arguments; }
+.transition(){
+	-webkit-transition: all .2s ease-out;
+	-moz-transition: all .2s ease-out;
+	-o-transition: all .2s ease-out;
+	-ms-transition: all .2s ease-out;
+	transition: all .2s ease-out;
+}
 
-.non-selectable { 
+.transition(@a){
+	-webkit-transition: @arguments;
+	-moz-transition: @arguments;
+	-o-transition: @arguments;
+	-ms-transition: @arguments;
+	transition: @arguments;
+}
+
+.non-selectable {
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	cursor: default; 
+	cursor: default;
 }
 
 
