@@ -8,7 +8,7 @@
  *   $('selector').tooltip();
  *   $('selector').tooltip('text');
  *   $('selector').tooltip({ text: 'text', position: 'br' });
- *   $('selector').tooltip('_destroy');																							// to remove the tooltip
+ *   $('selector').tooltip('_destroy');								// to remove the tooltip
  *
  * Creates a tooltip instance: $('selector').tooltip(conf)
  *
@@ -47,6 +47,8 @@
 
 
 		var Tooltip = function (conf) {
+			if (conf.target.length && conf.target.data('tooltipId')) return conf.target;										// already has a tooltip
+
 			this.conf = conf;																									// cache references to frequently used objects
 			this.target = this.conf.target;
 			this.win = $(window);
@@ -54,6 +56,7 @@
 			this.animSpeed = 0;
 			this.targetDistance = 7;
 			this.screenMargin = 0;
+
 
 			if (!navigator.userAgent.match(/msie/i) && this.conf.animate) {														// don't animate in IE, else show as in conf
 				this.animSpeed = (typeof this.conf.animate === 'number' ? this.conf.animate : 300);
@@ -118,7 +121,7 @@
 		Tooltip.prototype.dontHide = function () { this.tooltip.stop(true).fadeTo(0, 1); };
 
 
-		Tooltip.prototype.align = function (keepOnScreen) {
+		Tooltip.prototype.align = function (keepOnScreen) {																		/*jshint white:false */ // - allow for a normal switch-case alignment
 			var position = this.conf.position,
 				targetOff = this.target.offset(),
 				targetW = this.target.outerWidth(),
@@ -170,34 +173,18 @@
 
 			var cls = ['tooltip', (this.conf.cls || ''), 'tooltip-' + position[0]];												// position the tooltip
 			switch (position[0]) {
-			case 't' :
-				tooltip.top	= target.t - tooltip.h - this.targetDistance;
-				break;
-			case 'b' :
-				tooltip.top	= target.b + this.targetDistance;
-				break;
-			case 'l' :
-				tooltip.left	= target.l - tooltip.w - this.targetDistance;
-				break;
-			case 'r' :
-				tooltip.left	= target.r + this.targetDistance;
-				break;
+				case 't' : tooltip.top	= target.t - tooltip.h - this.targetDistance; break;
+				case 'b' : tooltip.top	= target.b + this.targetDistance; break;
+				case 'l' : tooltip.left	= target.l - tooltip.w - this.targetDistance; break;
+				case 'r' : tooltip.left	= target.r + this.targetDistance; break;
 			}
 			if (position[1]) {
 				cls.push('tooltip-' + position[0] + position[1]);
 				switch (position[1]) {
-				case 't' :
-					tooltip.top	= target.b - tooltip.h - target.h / 2 + 10;
-					break;
-				case 'b' :
-					tooltip.top	= target.t + target.h / 2 - 10;
-					break;
-				case 'r' :
-					tooltip.left	= target.l + target.w / 2 - 10;
-					break;
-				case 'l' :
-					tooltip.left	= target.r - tooltip.w - target.w / 2 + 10;
-					break;
+					case 't' : tooltip.top	= target.b - tooltip.h - target.h / 2 + 10; break;
+					case 'b' : tooltip.top	= target.t + target.h / 2 - 10; break;
+					case 'r' : tooltip.left	= target.l + target.w / 2 - 10; break;
+					case 'l' : tooltip.left	= target.r - tooltip.w - target.w / 2 + 10; break;
 				}
 			}
 			this.tooltip.attr('class', cls.join(' ')).css(tooltip);
@@ -225,7 +212,7 @@
 		return $(this).each(function () {
 			var element = $(this), tt;
 			if (options === '_destroy') {
-				$('#' + element.data('tooltipId')).remove();																		// remove tooltips
+				$('#' + element.data('tooltipId')).remove();																	// remove tooltips
 				element.off('.tooltip').removeData('tooltipId');																// remove event listeners from targets
 			}
 			else {
