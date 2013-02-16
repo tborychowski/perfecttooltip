@@ -10,10 +10,10 @@
 
 </head>
 <body>
-<a href="https://github.com/Herhor/perfecttooltip"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+<a href="https://github.com/tborychowski/perfecttooltip"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
 
-<h1><a href="https://github.com/Herhor/perfecttooltip">Perfect Tooltip</a>  demo</h1>
+<h1><a href="https://github.com/tborychowski/perfecttooltip">Perfect Tooltip</a>  demo</h1>
 
 <h2>Features</h2>
 <ul>
@@ -32,6 +32,22 @@
 	<li>Fully customizable with <b>CSS</b>
 	<li>It's jQuery <b>chainable</b>
 </ul>
+
+<h2>Demo</h2>
+<div class="buttons">
+	<button class="btn btn-primary" id="button1" title="Button 1 tooltip text">default position, convert title to tooltip</button>
+	<button class="btn btn-danger" id="button2">default position, custom text</button>
+	<button class="btn btn-info" id="button3">default position, html tooltip</button>
+	<button class="btn btn-inverse" id="button4" title="On the top-right">position top-right with no animation</button>
+	<button class="btn btn-warning" id="button5" title="On the bottom-left">position bottom-left, custom css class</button>
+	<button class="btn btn-danger" id="button6" title="On the right">position right, html content, long animation</button>
+	<button class="btn btn-info" id="button7" title="On the top, show on click">position top, show on click</button>
+	<button class="btn btn-success" id="button8" title="On the top, dont hide on tooltip hover">position top, don't hide when hovering the tooltip</button>
+	<button class="btn btn-primary" id="button9" title="On the right, show with delay">position right, show with 1000ms delay</button>
+	<button class="btn btn-inverse" id="button10">position top, html content, don't hide on tooltip hover</button>
+	<button class="btn btn-success" id="button11">position left-top, html content</button>
+	<button class="btn btn-warning" id="button12">position left-bottom, html content, force position</button>
+</div>
 
 <h2>Usage</h2>
 <div class="javascript">$<span class="br0">&#40;</span><span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#123;</span><br />
@@ -53,40 +69,26 @@
 <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
 &nbsp;</div>
 
-<div class="buttons">
-	<button class="btn btn-primary" id="button1" title="Button 1 tooltip text">default position, convert title to tooltip</button>
-	<button class="btn btn-danger" id="button2">default position, custom text</button>
-	<button class="btn btn-info" id="button3">default position, html tooltip</button>
-	<button class="btn btn-inverse" id="button4" title="On the top-right">position top-right with no animation</button>
-	<button class="btn btn-warning" id="button5" title="On the bottom-left">position bottom-left, custom css class</button>
-	<button class="btn btn-danger" id="button6" title="On the right">position right, html content, long animation</button>
-	<button class="btn btn-info" id="button7" title="On the top, show on click">position top, show on click</button>
-	<button class="btn btn-success" id="button8" title="On the top, dont hide on tooltip hover">position top, don't hide when hovering the tooltip</button>
-	<button class="btn btn-primary" id="button9" title="On the right, show with delay">position right, show with 1000ms delay</button>
-	<button class="btn btn-inverse" id="button10">position top, html content, don't hide on tooltip hover</button>
-	<button class="btn btn-success" id="button11">position left-top, html content</button>
-	<button class="btn btn-warning" id="button12">position left-bottom, html content, force position</button>
-</div>
 
 
 <h2>Download</h2>
-<div class="download"><a href="https://github.com/Herhor/perfecttooltip/zipball/master"><img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a><a href="https://github.com/Herhor/perfecttooltip/tarball/master"><img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a></div>
-<p>You can download this project in either <a href="https://github.com/Herhor/perfecttooltip/zipball/master">zip</a> or <a href="https://github.com/Herhor/perfecttooltip/tarball/master">tar</a> formats. You can also clone the project with <a href="http://git-scm.com">Git</a> by running: <pre>$ git clone git://github.com/Herhor/perfecttooltip</pre></p>
+<div class="download"><a href="https://github.com/tborychowski/perfecttooltip/zipball/master"><img border="0" width="90" src="https://github.com/images/modules/download/zip.png"></a><a href="https://github.com/tborychowski/perfecttooltip/tarball/master"><img border="0" width="90" src="https://github.com/images/modules/download/tar.png"></a></div>
+<p>You can download this project in either <a href="https://github.com/tborychowski/perfecttooltip/zipball/master">zip</a> or <a href="https://github.com/tborychowski/perfecttooltip/tarball/master">tar</a> formats. You can also clone the project with <a href="http://git-scm.com">Git</a> by running: <pre>$ git clone git://github.com/tborychowski/perfecttooltip</pre></p>
 
-<div class="footer">get the source code on GitHub : <a href="https://github.com/Herhor/perfecttooltip">Herhor/perfecttooltip</a></div>
+<div class="footer">get the source code on GitHub : <a href="https://github.com/tborychowski/perfecttooltip">tborychowski/perfecttooltip</a></div>
 
 
 
-<script src="js/jquery-1.8.2.min.js"></script>
+<script src="js/jquery.min.js"></script>
 <script src="js/jquery.tooltip.js"></script>
 <script>
 $(function(){
 	var html1 = '<h2>Tooltip title</h2><p>Tooltip description</p>',
 		html2 = '<h2>Tooltip title</h2><p>A very loong tooltip description text<br> with multiple lines<br>and some links: <a href="#">Link</a></p>';
-		
+
     $('#button1').tooltip();																		// convert "title" attribute to a tooltip
     $('#button2').tooltip('Button 2 tooltip text');													// show custom text
-    $('#button3').tooltip(html1);																	// show html	
+    $('#button3').tooltip(html1);																	// show html
     $('#button4').tooltip({ position: 'tr', animate: 0 });											// position top-right, no animation
     $('#button5').tooltip({ position: 'bl', cls: 'custom-tooltip' });								// position bottom-left, custom css class
     $('#button6').tooltip({ position: 'r', animate: 1000, text: html1, cls: 'big-tooltip' });		// position right, html content, long animation

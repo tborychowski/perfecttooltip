@@ -9,5 +9,5 @@ This is the Perfect Tooltip - a jQuery plugin
         $('#button2').tooltip('Button 2 tooltip text');   // show custom text
     });
 
-[See the DEMO](http://herhor.github.com/perfecttooltip)
+[See the DEMO](http://tborychowski.github.com/perfecttooltip)
 
