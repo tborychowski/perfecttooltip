@@ -20,7 +20,7 @@ pre { background: #fff; }
 
 
 
-.test-table { border-collapse: collapse; }
+.test-table { border-collapse: collapse; margin: 30px; }
 .test-table td { border: 1px solid #ccc; padding: 20px; }
 .test-table .tt-wrapper { position: relative; }
 .test-table .tooltip { position: relative; }
