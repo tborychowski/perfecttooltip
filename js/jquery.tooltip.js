@@ -55,7 +55,7 @@
 			eventNS = '.tooltip',
 			showEvent = 'mouseenter';
 
-		if (conf || conf.lazy === false) config.lazy = false;
+		if (conf && conf.lazy === false) config.lazy = false;
 
 		// if just text given - make it a text
 		if (typeof conf === 'string' && conf !== '_destroy') config.text = conf;
@@ -168,7 +168,7 @@
 
 	Tooltip.prototype.align = function (keepOnScreen) {
 		/*jshint white:false */ // - allow for a normal switch-case alignment
-
+		if (!this || !this.tooltip) return;
 		var position = this.conf.position,
 			targetOff = this.target.offset(),
 			targetW = this.target.outerWidth(),
