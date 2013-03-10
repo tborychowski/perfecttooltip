@@ -46,13 +46,13 @@
 		dontHideOnTooltipHover: false,
 		lazy: true
 	},
+	eventNS = '.tooltip',
 
 	Tooltip = function (target, conf) {
 		var config = {},
 			self = this,
 			timestamp = +new Date(),
 			tooltipId = 'tooltip' + timestamp,
-			eventNS = '.tooltip',
 			showEvent = 'mouseenter';
 
 		if (conf && conf.lazy === false) config.lazy = false;
@@ -130,6 +130,12 @@
 		if (!this.tooltip) {
 			this.text = this.text || el.title || '';
 			this.tooltip = $('<div id="' + this.tooltipId + '">' + this.text + '</div>').appendTo('body').hide();
+
+			if (this.tooltip && this.conf.dontHideOnTooltipHover === true) {
+				this.tooltip.off(eventNS)
+					.on('mouseenter' + eventNS, function (e) { self.dontHide.call(self, e, this); })
+					.on('mouseleave' + eventNS, function (e) { self.hide.call(self, e, this); });
+			}
 		}
 
 		// using .attr doesn't work in IE8
@@ -168,6 +174,7 @@
 
 	Tooltip.prototype.align = function (keepOnScreen) {
 		/*jshint white:false */ // - allow for a normal switch-case alignment
+
 		if (!this || !this.tooltip) return;
 		var position = this.conf.position,
 			targetOff = this.target.offset(),
