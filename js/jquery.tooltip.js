@@ -1,5 +1,5 @@
 /**
- * Perfect Tooltip, v1.3
+ * Perfect Tooltip, v1.4
  *
  * @author	Tomasz Borychowski
  * @url http://tborychowski.github.com/perfecttooltip
@@ -25,6 +25,9 @@
  *		trigger {String}				show tooltip event listener [hover|click|manual], defaults to 'hover'
  *		showDelay {int}					delay showing the tooltip for x miliseconds, defaults to 100
  *		dontHideOnTooltipHover {Bool}	don't hide the tooltip when mouse is over it
+ *		cls {String}				    additional css class for the tooltip
+ *		selector {String}				if not empty - tooltip will be attached to the target but event will be filtered
+ *                                      by this selector
  *		lazy {Bool}						if true - markup is created only when mouse is over the target
  *
  * @returns								a tooltip instance
@@ -44,9 +47,15 @@
 		trigger: 'hover',
 		showDelay: 200,
 		dontHideOnTooltipHover: false,
+		selector: '',
 		lazy: true
 	},
 	eventNS = '.tooltip',
+
+	_getHtml = function (id, text, cls) {
+		var styl = 'display:none; position:absolute; -webkit-transform:translateZ(0); transform:translateZ(0px);';
+		return '<div id="' + id + '" class="' + (cls || '') + '" style="' + styl + '">' + text + '</div>';
+	},
 
 	Tooltip = function (target, conf) {
 		var config = {},
@@ -73,16 +82,14 @@
 		this.target = target;
 		this.win = $(window);
 		this.doc = $(document);
-		this.animSpeed = 0;
+		this.animSpeed = 100;
 		this.targetDistance = 7;
 		this.screenMargin = 0;
 		this.tooltipId = tooltipId;
 
 
 		// don't animate in IE, else show as in conf
-		if (!navigator.userAgent.match(/msie/i) && this.conf.animate) {
-			this.animSpeed = (typeof this.conf.animate === 'number' ? this.conf.animate : 300);
-		}
+		if (navigator.userAgent.match(/msie/i) || this.conf.animate === false) this.animSpeed = 0;
 
 		if (typeof this.conf.trigger === 'string') {
 			showEvent = (this.conf.trigger === 'hover' ? 'mouseenter' : this.conf.trigger);
@@ -92,9 +99,9 @@
 		if (this.conf.text) this.text = this.conf.text;
 
 		// tooltip from title
-		else if (this.target[0] && this.target[0].title) this.text = this.target[0].title;
+		else if (!this.conf.selector && this.target[0] && this.target[0].title) this.text = this.target[0].title;
 
-		else return null;
+		else if (!this.conf.selector) return null;
 
 		// destroy previous tooltip if any
 		this.destroy();
@@ -104,16 +111,16 @@
 		/* EVENTS */
 
 		if (this.target.length) {
-			this.target.attr('title', this.text);
+			if (!this.conf.selector) this.target.attr('title', this.text);
 			if (!this.conf.lazy) {
-				this.tooltip = $('<div id="' + tooltipId + '">' + this.text + '</div>').appendTo('body').hide();
+				this.tooltip = $(_getHtml(tooltipId, this.text, this.conf.cls)).appendTo('body');
 			}
 
 			this.target.data('tooltipId', tooltipId)
 				.off(eventNS)
-				.on(showEvent + eventNS, function (e) { self.show.call(self, e, this); })
-				.on('mouseleave' + eventNS, function (e) { self.hide.call(self, e, this); })
-				.on('destroyed' + eventNS, function () { self.destroy.call(self); });
+				.on(showEvent + eventNS, this.conf.selector, function (e) { self.show.call(self, e, this); })
+				.on('mouseleave' + eventNS, this.conf.selector, function (e) { self.hide.call(self, e, this); })
+				.on('destroyed' + eventNS, this.conf.selector, function () { self.destroy.call(self); });
 		}
 
 		if (this.tooltip && this.conf.dontHideOnTooltipHover === true) {
@@ -127,9 +134,12 @@
 
 
 	Tooltip.prototype.show = function (ev, el) {
+		var self = this;
+		this.currentTarget = $(el);
 		if (!this.tooltip) {
-			this.text = this.text || el.title || '';
-			this.tooltip = $('<div id="' + this.tooltipId + '">' + this.text + '</div>').appendTo('body').hide();
+			this.text = el.title || this.text || '';
+			el.title = '';
+			this.tooltip = $(_getHtml(this.tooltipId, this.text, this.conf.cls)).appendTo('body');
 
 			if (this.tooltip && this.conf.dontHideOnTooltipHover === true) {
 				this.tooltip.off(eventNS)
@@ -139,47 +149,45 @@
 		}
 
 		// using .attr doesn't work in IE8
-		if (this.target && this.target.length) {
-			if (this.target[0].title && this.text !== this.target[0].title) {
-				this.tooltip.html(this.text = this.target[0].title);
-			}
-			this.target[0].title = '';
+		if (el) {
+			if (el.title && this.text !== el.title) this.tooltip.html(this.text = el.title);
+			el.title = '';
 		}
 		if (this.tooltip.is(':hidden')) {
-			var self = this;
-			setTimeout(function () { self.align.call(self); }, 1);
+			setTimeout(function () { self.align.call(self, self.currentTarget); }, 1);
 			this.tooltip.stop(true).fadeTo(0, 0).show();
-			this.align().delay(this.conf.showDelay).fadeTo(this.animSpeed, 1);
+			this.align(this.currentTarget).delay(this.conf.showDelay).fadeTo(this.animSpeed, 1);
 		}
-		else this.align().stop(true).fadeTo(this.animSpeed, 1);
+		else this.align(this.currentTarget).stop(true).fadeTo(this.animSpeed, 1);
 	};
 
 
 	Tooltip.prototype.hide = function () {
 		var self = this, animSpeed = (this.conf.dontHideOnTooltipHover ? this.animSpeed + 100 : this.animSpeed);
-		if (this.tooltip) {
-			this.tooltip.stop(true).fadeTo(animSpeed, 0, function () {
-				self.tooltip.hide();
-				if (self.target && self.target.length) self.target[0].title = self.text;
-				if (self.conf.lazy) {
-					self.tooltip.remove();
-					self.tooltip = null;
-				}
-			});
-		}
+		if (!this.tooltip) return;
+		this.tooltip.stop(true).fadeTo(animSpeed, 0, function () {
+			self.tooltip.hide();
+			if (self.currentTarget && self.currentTarget.length) {
+				self.currentTarget[0].title = self.text;
+			}
+			if (self.conf.lazy) {
+				self.tooltip.remove();
+				self.tooltip = null;
+			}
+		});
 	};
 
 	Tooltip.prototype.dontHide = function () { this.tooltip.stop(true).fadeTo(0, 1); };
 
 
-	Tooltip.prototype.align = function (keepOnScreen) {
+	Tooltip.prototype.align = function (el, keepOnScreen) {
 		/*jshint white:false */ // - allow for a normal switch-case alignment
 
 		if (!this || !this.tooltip) return;
 		var position = this.conf.position,
-			targetOff = this.target.offset(),
-			targetW = this.target.outerWidth(),
-			targetH = this.target.outerHeight(),
+			targetOff = el.offset(),
+			targetW = el.outerWidth(),
+			targetH = el.outerHeight(),
 			win = {
 				width: this.win.width(),
 				height: this.win.height(),
@@ -269,7 +277,7 @@
 
 			// too far to the right
 			if (tooltip.left + tooltip.w + this.screenMargin - win.scrollLeft > win.width) isOnScreen = false;
-			if (isOnScreen === false) return this.align(true);
+			if (isOnScreen === false) return this.align(el, true);
 		}
 
 		return this.tooltip;
