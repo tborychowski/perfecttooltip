@@ -138,6 +138,7 @@
 			if (!this.text) return;
 
 			this.tooltip = $(_getHtml(this.tooltipId, this.text, this.conf.cls)).appendTo('body');
+			this.tooltip.data('tooltip', this);
 
 			if (this.tooltip && this.conf.dontHideOnTooltipHover === true) {
 				this.tooltip.off(eventNS)
@@ -236,18 +237,34 @@
 		// position the tooltip
 		cls = ['tooltip', (this.conf.cls || ''), 'tooltip-' + position[0]];
 		switch (position[0]) {
-			case 't' : tooltip.top	= target.t - tooltip.h - this.targetDistance; break;
-			case 'b' : tooltip.top	= target.b + this.targetDistance; break;
-			case 'l' : tooltip.left	= target.l - tooltip.w - this.targetDistance; break;
-			case 'r' : tooltip.left	= target.r + this.targetDistance; break;
+		case 't' :
+			tooltip.top	= target.t - tooltip.h - this.targetDistance;
+			break;
+		case 'b' :
+			tooltip.top	= target.b + this.targetDistance;
+			break;
+		case 'l' :
+			tooltip.left	= target.l - tooltip.w - this.targetDistance;
+			break;
+		case 'r' :
+			tooltip.left	= target.r + this.targetDistance;
+			break;
 		}
 		if (position[1]) {
 			cls.push('tooltip-' + position[0] + position[1]);
 			switch (position[1]) {
-				case 't' : tooltip.top	= target.b - tooltip.h - target.h / 2 + 10; break;
-				case 'b' : tooltip.top	= target.t + target.h / 2 - 10; break;
-				case 'r' : tooltip.left	= target.l + target.w / 2 - 10; break;
-				case 'l' : tooltip.left	= target.r - tooltip.w - target.w / 2 + 10; break;
+			case 't' :
+				tooltip.top	= target.b - tooltip.h - target.h / 2 + 10;
+				break;
+			case 'b' :
+				tooltip.top	= target.t + target.h / 2 - 10;
+				break;
+			case 'r' :
+				tooltip.left	= target.l + target.w / 2 - 10;
+				break;
+			case 'l' :
+				tooltip.left	= target.r - tooltip.w - target.w / 2 + 10;
+				break;
 			}
 		}
 
@@ -282,12 +299,20 @@
 
 
 	$.fn.tooltip = function (options) {
-		var target, tt;
+		var target, tt, td;
 		return $(this).each(function () {
 			target = $(this);
-			if (options === '_destroy') {
-				$('#' + target.data('tooltipId')).remove();		// remove tooltips
-				target.off('.tooltip').removeData('tooltipId');	// remove event listeners from targets
+
+			if (typeof options === 'string') {
+				tt = $('#' + target.data('tooltipId'));
+				if (options === '_destroy') {
+					tt.remove();									// remove tooltips
+					target.off('.tooltip').removeData('tooltipId');	// remove event listeners from targets
+				}
+				else if (options === 'hide') {
+					td = tt.data('tooltip');
+					if (td && td.hide) td.hide();
+				}
 			}
 			else {
 				tt = new Tooltip(target, options);
