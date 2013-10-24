@@ -5,7 +5,7 @@
 <title>Perfect Tooltip demo</title>
 <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="css/demo.css" rel="stylesheet" type="text/css">
-<link href="css/tooltip.css" rel="stylesheet/css" type="text/css">
+<link href="css/tooltip.css" rel="stylesheet" type="text/css">
 
 </head>
 <body>
@@ -18,10 +18,10 @@
 <ul>
 	<li>Only 1 html element (div)!
 	<li>Creates a simple tooltip on <b>any html element</b> that matches the given <b>selector</b> (jQuery array)
-	<li>It can either convert a <b>"title"</b> attribute of the element or add a user-defined text
-	<li>It will be <b>automatically destroyed</b> (removed from DOM) when the target element is removed
-	<li>It will automatically <b>adjust</b> its <b>position</b> to stay on screen (unless specified differently)
-	<li>It can be set to the one of the <b>12</b> different positions relatively to a target
+	<li>It can either convert a <b>"data-title"</b> or a <b>"title"</b> attribute of the element or add a user-defined text
+	<li>It is only added to the <b>DOM</b> when required (visible)
+	<li>It will automatically <b>adjust</b> its <b>position</b> to stay on screen (unless forcePosition is true)
+	<li>It can be set to the one of the <b>12</b> different positions relatively to the target
 	<li>It can show up <b>on</b> mouse <b>hover</b> (default) or on <b>click</b>
 	<li>It hides when you move mouse out of the target (default)
 	<li>It can also stay on screen when you move mouse over the tooltip (to allow selecting its text)
@@ -30,6 +30,7 @@
 	<li>When it converts the "title" attribute - whenever the attribute is changed - the tooltip is also updated
 	<li>Fully customizable with <b>CSS</b>
 	<li>It's jQuery <b>chainable</b>
+	<li>It can be attached to the parent element (even <b>body</b>) and if <b>selector</b> is specified - it will work for elements that are added to the page dynamically (after the tooltip was called!)
 </ul>
 
 <h2>Demo</h2>
@@ -46,6 +47,7 @@
 	<button class="btn btn-inverse" id="button10">position top, html content, don't hide on tooltip hover</button>
 	<button class="btn btn-success" id="button11">position left-top, html content</button>
 	<button class="btn btn-warning" id="button12">position left-bottom, html content, force position</button>
+	<button class="btn btn-large lazy" data-title="added to body">added to "body" (click the button to clone)</button>
 </div>
 
 
@@ -81,24 +83,30 @@
 
 
 <h2>Usage</h2>
-<div class="javascript">$<span class="br0">&#40;</span><span class="kw2">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="br0">&#123;</span><br />
-&nbsp; &nbsp; <span class="kw2">var</span> html1 <span class="sy0">=</span> <span class="st0">'&lt;h2&gt;Tooltip title&lt;/h2&gt;&lt;p&gt;Tooltip description&lt;/p&gt;'</span><span class="sy0">,</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; html2 <span class="sy0">=</span> <span class="st0">'&lt;h2&gt;Tooltip title&lt;/h2&gt;&lt;p&gt;A very loong tooltip description text&lt;br&gt; with multiple lines&lt;br&gt;and some links: &lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;'</span><span class="sy0">;</span><br />
-&nbsp; &nbsp; &nbsp; &nbsp; <br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button1'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#41;</span><span class="sy0">;</span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">// convert &quot;title&quot; attribute to a tooltip</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button2'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="st0">'Button 2 tooltip text'</span><span class="br0">&#41;</span><span class="sy0">;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">// show custom text</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button3'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span>html1<span class="br0">&#41;</span><span class="sy0">;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">// show html&nbsp; &nbsp; </span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button4'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'tr'</span><span class="sy0">,</span> animate<span class="sy0">:</span> <span class="nu0">0</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">// position top-right, no animation</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button5'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'bl'</span><span class="sy0">,</span> cls<span class="sy0">:</span> <span class="st0">'custom-tooltip'</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">// position bottom-left, custom css class</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button6'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'r'</span><span class="sy0">,</span> animate<span class="sy0">:</span> <span class="nu0">1000</span><span class="sy0">,</span> text<span class="sy0">:</span> html1<span class="sy0">,</span> cls<span class="sy0">:</span> <span class="st0">'big-tooltip'</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span> &nbsp; &nbsp; &nbsp; <span class="co1">// position right, html content, long animation</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button7'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'t'</span><span class="sy0">,</span> trigger<span class="sy0">:</span> <span class="st0">'click'</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="co1">// position top, show on click</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button8'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'t'</span><span class="sy0">,</span> dontHideOnTooltipHover<span class="sy0">:</span> <span class="kw2">true</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button9'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'r'</span><span class="sy0">,</span> dontHideOnTooltipHover<span class="sy0">:</span> <span class="kw2">true</span><span class="sy0">,</span> text<span class="sy0">:</span> html2<span class="sy0">,</span> cls<span class="sy0">:</span> <span class="st0">'big-tooltip'</span><span class="sy0">,</span> showDelay<span class="sy0">:</span> <span class="nu0">1000</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span><span class="co1">// position left, show with 1000ms delay</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button10'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'t'</span><span class="sy0">,</span> dontHideOnTooltipHover<span class="sy0">:</span> <span class="kw2">true</span><span class="sy0">,</span> text<span class="sy0">:</span> html2<span class="sy0">,</span> cls<span class="sy0">:</span> <span class="st0">'big-tooltip'</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button11'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'lt'</span><span class="sy0">,</span> dontHideOnTooltipHover<span class="sy0">:</span> <span class="kw2">true</span><span class="sy0">,</span> text<span class="sy0">:</span> html2<span class="sy0">,</span> cls<span class="sy0">:</span> <span class="st0">'big-tooltip'</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
-&nbsp; &nbsp; $<span class="br0">&#40;</span><span class="st0">'#button12'</span><span class="br0">&#41;</span>.<span class="me1">tooltip</span><span class="br0">&#40;</span><span class="br0">&#123;</span> position<span class="sy0">:</span> <span class="st0">'lb'</span><span class="sy0">,</span> dontHideOnTooltipHover<span class="sy0">:</span> <span class="kw2">true</span><span class="sy0">,</span> text<span class="sy0">:</span> html2<span class="sy0">,</span> cls<span class="sy0">:</span> <span class="st0">'big-tooltip'</span><span class="sy0">,</span> forcePosition<span class="sy0">:</span> <span class="kw2">true</span> <span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
-<span class="br0">&#125;</span><span class="br0">&#41;</span><span class="sy0">;</span><br />
-&nbsp;</div>
+<!-- http://markup.su/highlighter/ :: theme: lazy -->
+<pre style="background:#fff;color:#000"><span style="color:#3b5bb5">$</span>(<span style="color:#ff7800">function</span>(){
+    <span style="color:#ff7800">var</span> html1 <span style="color:#ff7800">=</span> '<span style="color:#3a4a64">&lt;<span style="color:#3a4a64">h2</span>></span>Tooltip title<span style="color:#3a4a64">&lt;/<span style="color:#3a4a64">h2</span>></span><span style="color:#3a4a64">&lt;<span style="color:#3a4a64">p</span>></span>Tooltip description<span style="color:#3a4a64">&lt;/<span style="color:#3a4a64">p</span>></span>',
+        html2 <span style="color:#ff7800">=</span> '<span style="color:#3a4a64">&lt;<span style="color:#3a4a64">h2</span>></span>Tooltip title<span style="color:#3a4a64">&lt;/<span style="color:#3a4a64">h2</span>></span><span style="color:#3a4a64">&lt;<span style="color:#3a4a64">p</span>></span>A very loong tooltip description text<span style="color:#3a4a64">&lt;<span style="color:#3a4a64">br</span>></span> with multiple lines<span style="color:#3a4a64">&lt;<span style="color:#3a4a64">br</span>></span>and some links: <span style="color:#3a4a64">&lt;<span style="color:#3a4a64">a</span> <span style="color:#3a4a64">href</span>=<span style="color:#409b1c">"#"</span>></span>Link<span style="color:#3a4a64">&lt;/<span style="color:#3a4a64">a</span>></span><span style="color:#3a4a64">&lt;/<span style="color:#3a4a64">p</span>></span>';
+
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button1'</span>).tooltip();                                                                        <span style="color:#8c868f">// convert "title" attribute to a tooltip</span>
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button2'</span>).tooltip(<span style="color:#409b1c">'Button 2 tooltip text'</span>);                                                 <span style="color:#8c868f">// show custom text</span>
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button3'</span>).tooltip(html1);                                                                   <span style="color:#8c868f">// show html</span>
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button4'</span>).tooltip({ position: <span style="color:#409b1c">'tr'</span>, animate: <span style="color:#3b5bb5">0</span> });                                          <span style="color:#8c868f">// position top-right, no animation</span>
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button5'</span>).tooltip({ position: <span style="color:#409b1c">'bl'</span>, cls: <span style="color:#409b1c">'custom-tooltip'</span> });                               <span style="color:#8c868f">// position bottom-left, custom css class</span>
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button6'</span>).tooltip({ position: <span style="color:#409b1c">'r'</span>, animate: <span style="color:#3b5bb5">1000</span>, text: html1, cls: <span style="color:#409b1c">'big-tooltip'</span> });       <span style="color:#8c868f">// position right, html content, long animation</span>
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button7'</span>).tooltip({ position: <span style="color:#409b1c">'t'</span>, trigger: <span style="color:#409b1c">'click'</span> });                                     <span style="color:#8c868f">// position top, show on click</span>
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button8'</span>).tooltip({ position: <span style="color:#409b1c">'t'</span>, dontHideOnTooltipHover: <span style="color:#3b5bb5">true</span> });
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button9'</span>).tooltip({ position: <span style="color:#409b1c">'r'</span>, dontHideOnTooltipHover: <span style="color:#3b5bb5">true</span>, text: html2, cls: <span style="color:#409b1c">'big-tooltip'</span>, showDelay: <span style="color:#3b5bb5">1000</span> });<span style="color:#8c868f">// position left, show with 1000ms delay</span>
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button10'</span>).tooltip({ position: <span style="color:#409b1c">'t'</span>, dontHideOnTooltipHover: <span style="color:#3b5bb5">true</span>, text: html2, cls: <span style="color:#409b1c">'big-tooltip'</span> });
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button11'</span>).tooltip({ position: <span style="color:#409b1c">'lt'</span>, dontHideOnTooltipHover: <span style="color:#3b5bb5">true</span>, text: html2, cls: <span style="color:#409b1c">'big-tooltip'</span> });
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'#button12'</span>).tooltip({ position: <span style="color:#409b1c">'lb'</span>, dontHideOnTooltipHover: <span style="color:#3b5bb5">true</span>, text: html2, cls: <span style="color:#409b1c">'big-tooltip'</span>, forcePosition: <span style="color:#3b5bb5">true</span> });
+
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'body'</span>).tooltip({ selector: <span style="color:#409b1c">'.lazy'</span> });
+
+    <span style="color:#ff7800">$</span>(<span style="color:#409b1c">'body'</span>).on(<span style="color:#409b1c">'click'</span>, <span style="color:#409b1c">'.btn.lazy'</span>, <span style="color:#ff7800">function</span>() { <span style="color:#ff7800">$</span>(this).clone().insertAfter(this); });          <span style="color:#8c868f">// clone button on click</span>
+});
+
+</pre>
 
 
 
@@ -117,18 +125,22 @@ $(function(){
 	var html1 = '<h2>Tooltip title</h2><p>Tooltip description</p>',
 		html2 = '<h2>Tooltip title</h2><p>A very loong tooltip description text<br> with multiple lines<br>and some links: <a href="#">Link</a></p>';
 
-    $('#button1').tooltip();																		// convert "title" attribute to a tooltip
-    $('#button2').tooltip('Button 2 tooltip text');													// show custom text
-    $('#button3').tooltip(html1);																	// show html
-    $('#button4').tooltip({ position: 'tr', animate: 0 });											// position top-right, no animation
-    $('#button5').tooltip({ position: 'bl', cls: 'custom-tooltip' });								// position bottom-left, custom css class
-    $('#button6').tooltip({ position: 'r', animate: 1000, text: html1, cls: 'big-tooltip' });		// position right, html content, long animation
-    $('#button7').tooltip({ position: 't', trigger: 'click' });										// position top, show on click
-    $('#button8').tooltip({ position: 't', dontHideOnTooltipHover: true });
-    $('#button9').tooltip({ position: 'r', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', showDelay: 1000 });// position left, show with 1000ms delay
-    $('#button10').tooltip({ position: 't', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
-    $('#button11').tooltip({ position: 'lt', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
-    $('#button12').tooltip({ position: 'lb', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', forcePosition: true });
+	$('#button1').tooltip();																		// convert "title" attribute to a tooltip
+	$('#button2').tooltip('Button 2 tooltip text');													// show custom text
+	$('#button3').tooltip(html1);																	// show html
+	$('#button4').tooltip({ position: 'tr', animate: 0 });											// position top-right, no animation
+	$('#button5').tooltip({ position: 'bl', cls: 'custom-tooltip' });								// position bottom-left, custom css class
+	$('#button6').tooltip({ position: 'r', animate: 1000, text: html1, cls: 'big-tooltip' });		// position right, html content, long animation
+	$('#button7').tooltip({ position: 't', trigger: 'click' });										// position top, show on click
+	$('#button8').tooltip({ position: 't', dontHideOnTooltipHover: true });
+	$('#button9').tooltip({ position: 'r', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', showDelay: 1000 });// position left, show with 1000ms delay
+	$('#button10').tooltip({ position: 't', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
+	$('#button11').tooltip({ position: 'lt', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
+	$('#button12').tooltip({ position: 'lb', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', forcePosition: true });
+
+	$('body').tooltip({ selector: '.lazy' });
+
+	$('body').on('click', '.btn.lazy', function() { $(this).clone().insertAfter(this); });			// clone button on click
 });
 </script>
 </body>

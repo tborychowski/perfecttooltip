@@ -16,35 +16,8 @@ ul li { margin: 0 0 5px 0; }
 .big-tooltip p { color: #eee; margin: 0; line-height: 1.4; }
 .big-tooltip p a { color: #ccc; text-decoration: underline; }
 .big-tooltip p a:hover { text-decoration: none; }
-pre { background: #fff; }
-
-
 
 .test-table { border-collapse: collapse; margin: 30px; }
 .test-table td { border: 1px solid #ccc; padding: 20px; }
 .test-table .tt-wrapper { position: relative; }
-.test-table .tooltip { position: relative; }
-
-
-
-/**
- * GeSHi (C) 2004 - 2007 Nigel McNie, 2007 - 2008 Benny Baumann
- * (http://qbnz.com/highlighter/ and http://geshi.org/)
- */
-.javascript  {font-family:monospace; color: #006; border: 1px solid #d0d0d0; background-color: #fff; padding: 10px; }
-.javascript a:link {color: #000060;}
-.javascript a:hover {background-color: #f0f000;}
-.javascript .imp {font-weight: bold; color: red;}
-.javascript .kw1 {color: #000066; font-weight: bold;}
-.javascript .kw2 {color: #003366; font-weight: bold;}
-.javascript .kw3 {color: #000066;}
-.javascript .co1 {color: #006600; font-style: italic;}
-.javascript .co2 {color: #009966; font-style: italic;}
-.javascript .coMULTI {color: #006600; font-style: italic;}
-.javascript .es0 {color: #000099; font-weight: bold;}
-.javascript .br0 {color: #009900;}
-.javascript .sy0 {color: #339933;}
-.javascript .st0 {color: #3366CC;}
-.javascript .nu0 {color: #CC0000;}
-.javascript .me1 {color: #660066;}
-.javascript span.xtra { display:block; }
+.test-table .tooltip { position: relative; left: 0; top: 0; }
