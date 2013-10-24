@@ -1,5 +1,5 @@
 /**
- * Perfect Tooltip, v1.4
+ * Perfect Tooltip, v1.5
  *
  * @author	Tomasz Borychowski
  * @url http://tborychowski.github.com/perfecttooltip
@@ -68,6 +68,7 @@
 		// if just text given - make it a text
 		if (typeof conf === 'string' && conf !== '_destroy') config.text = conf;
 
+
 		// if not number - remove and use default
 		if (conf && typeof conf.showDelay !== 'number') delete conf.showDelay;
 
@@ -110,11 +111,19 @@
 
 		/* EVENTS */
 
-		this.target.data('tooltipId', tooltipId)
-			.off(eventNS)
-			.on(showEvent + eventNS, this.conf.selector, function (e) { self.show.call(self, e, this); })
-			.on('mouseleave' + eventNS, this.conf.selector, function (e) { self.hide.call(self, e, this); })
-			.on('destroyed' + eventNS, this.conf.selector, function () { self.destroy.call(self); });
+		this.target.data('tooltipId', tooltipId).off(eventNS);
+		if (this.conf.selector) {
+			this.target
+				.on(showEvent + eventNS, this.conf.selector, function (e) { self.show.call(self, e, this); })
+				.on('mouseleave' + eventNS, this.conf.selector, function (e) { self.hide.call(self, e, this); })
+				.on('destroyed' + eventNS, this.conf.selector, function () { self.destroy.call(self); });
+		}
+		else {
+			this.target
+				.on(showEvent + eventNS, function (e) { self.show.call(self, e, this); })
+				.on('mouseleave' + eventNS, function (e) { self.hide.call(self, e, this); })
+				.on('destroyed' + eventNS, function () { self.destroy.call(self); });
+		}
 
 		if (isIE) this.target.on('mousemove' + eventNS, this.conf.selector, function (e) { self.show.call(self, e, this); });
 
@@ -132,7 +141,7 @@
 		var self = this;
 		this.currentTarget = $(el);
 		if (!this.tooltip) {
-			this.text = this.currentTarget.data('title') || this.currentTarget.attr('title') || '';
+			this.text = this.currentTarget.data('title') || this.currentTarget.attr('title') || this.conf.text || '';
 			this.currentTarget.removeAttr('title').data('title', this.text);
 
 			if (!this.text) return;
@@ -299,12 +308,13 @@
 
 
 	$.fn.tooltip = function (options) {
-		var target, tt, td;
+		var target, tt, td, id;
 		return $(this).each(function () {
 			target = $(this);
+			if (target.length) id = target.data('tooltipId');
+			if (id) tt = $('#' + id);
 
-			if (typeof options === 'string') {
-				tt = $('#' + target.data('tooltipId'));
+			if (typeof options === 'string' && tt && tt.length) {
 				if (options === '_destroy') {
 					tt.remove();									// remove tooltips
 					target.off('.tooltip').removeData('tooltipId');	// remove event listeners from targets
