@@ -1,5 +1,5 @@
 /**
- * Perfect Tooltip, v1.5
+ * Perfect Tooltip, v1.6
  *
  * @author	Tomasz Borychowski
  * @url http://tborychowski.github.com/perfecttooltip
@@ -66,7 +66,7 @@
 
 
 		// if just text given - make it a text
-		if (typeof conf === 'string' && conf !== '_destroy') config.text = conf;
+		if (typeof conf === 'string') conf = { text: conf };
 
 
 		// if not number - remove and use default
@@ -87,7 +87,6 @@
 		this.screenMargin = 20;
 		this.tooltipId = tooltipId;
 
-
 		// don't animate in IE, else show as in conf
 		if (isIE || this.conf.animate === false) this.animSpeed = 0;
 
@@ -106,7 +105,6 @@
 
 		// destroy previous tooltip if any
 		this.destroy();
-
 
 
 		/* EVENTS */
@@ -302,7 +300,7 @@
 
 
 	Tooltip.prototype.destroy = function () {
-		if (this.target && this.target.length) this.target.off('.tooltip');
+		if (this.target && this.target.length) this.target.off('.tooltip').removeData('tooltipId');
 		if (this.tooltip && this.tooltip.length) this.tooltip.remove();
 	};
 
@@ -314,19 +312,22 @@
 			if (target.length) id = target.data('tooltipId');
 			if (id) tt = $('#' + id);
 
-			if (typeof options === 'string' && tt && tt.length) {
-				if (options === '_destroy') {
+			if (options === '_destroy') {
+				if (tt && tt.length) {
 					tt.remove();									// remove tooltips
 					target.off('.tooltip').removeData('tooltipId');	// remove event listeners from targets
 				}
-				else if (options === 'hide') {
+				return;
+			}
+			else if (options === 'hide') {
+				if (tt && tt.length) {
 					td = tt.data('tooltip');
 					if (td && td.hide) td.hide();
 				}
+				return;
 			}
-			else {
-				tt = new Tooltip(target, options);
-			}
+
+			tt = new Tooltip(target, options);
 		});
 	};
 })(jQuery);
