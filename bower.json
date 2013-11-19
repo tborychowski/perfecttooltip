@@ -7,5 +7,5 @@
 	],
 	"license": "MIT",
 	"ignore": [ "**/.*", "node_modules", "bower_components", "test", "tests" ],
-	"main": [ "js/jquery.tootlip.js", "css/tooltip.css", "css/tooltip.less" ]
+	"main": [ "js/jquery.tooltip.js", "css/tooltip.css", "css/tooltip.less" ]
 }
