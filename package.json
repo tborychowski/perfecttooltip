@@ -1,0 +1,6 @@
+{
+  "name": "perfect-tooltip",
+  "description": "This is the Perfect Tooltip - a jQuery plugin",
+  "version": "1.6.0",
+  "repository": { "type": "git", "url": "https://github.com/tborychowski/perfecttooltip.git" }
+}
