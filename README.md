@@ -3,6 +3,9 @@ Perfect Tooltip
 
 This is the Perfect Tooltip - a jQuery plugin
 
+### Installation
+    bower install perfect-tooltip
+
 ### Basic usage
     $(function(){
         $('#button1').tooltip();                          // convert "title" attribute
