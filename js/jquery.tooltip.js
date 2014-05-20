@@ -49,6 +49,8 @@
 		selector: ''
 	},
 	eventNS = '.tooltip',
+	isTouch = ('ontouchstart' in window ||		// works on most browsers
+				'onmsgesturechange' in window),	// works on ie10
 
 	_getHtml = function (id, text, cls) {
 		return '<div id="' + id + '" class="' + (cls || '') + '" ' +
@@ -72,6 +74,8 @@
 		// if not number - remove and use default
 		if (conf && typeof conf.showDelay !== 'number') delete conf.showDelay;
 
+		if (isTouch && !conf.trigger) conf.trigger = 'click';
+
 		config = $.extend({}, defaults, conf || {}, config);
 
 		// already has a tooltip
@@ -81,6 +85,7 @@
 		this.conf = config;
 		this.target = target;
 		this.win = $(window);
+		this.body = $('body');
 		this.doc = $(document);
 		this.animSpeed = 100;
 		this.targetDistance = 7;
@@ -152,6 +157,18 @@
 					.on('mouseenter' + eventNS, function (e) { self.dontHide.call(self, e, this); })
 					.on('mouseleave' + eventNS, function (e) { self.hide.call(self, e, this); });
 			}
+
+			if (isTouch) {
+				setTimeout(function () {
+					self.body.on('click' + eventNS, function (e) {
+						var target = $(e.target);
+						if (target.is(self.currentTarget)) return;
+						self.body.off(eventNS);
+						self.hide.call(self, e, this);
+					});
+				}, 100);
+			}
+
 		}
 		if (!this.tooltip || !this.tooltip.length) return;
 
