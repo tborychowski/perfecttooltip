@@ -14,3 +14,5 @@ This is the Perfect Tooltip - a jQuery plugin
 
 [See the DEMO](http://tborychowski.github.com/perfecttooltip)
 
+### License
+*MIT*
