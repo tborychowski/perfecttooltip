@@ -155,12 +155,22 @@
 		}
 		if (!this.tooltip || !this.tooltip.length) return;
 
-		if (this.tooltip.is(':hidden')) {
-			this.tooltip.stop(true).fadeTo(0, 0).show();
-			setTimeout(function () { self.align.call(self, self.currentTarget); }, 10);
-			this.align(this.currentTarget).delay(this.conf.showDelay).fadeTo(this.animSpeed, 1);
+		if($('img', this.tooltip).size()){
+			$('img', this.tooltip).load(function () {
+				alignTooltip();
+			});
+		} else {
+			alignTooltip();
 		}
-		else this.align(this.currentTarget).stop(true).fadeTo(this.animSpeed, 1);
+
+		function alignTooltip(){
+			if (self.tooltip.is(':hidden')) {
+				self.tooltip.stop(true).fadeTo(0, 0).show();
+				setTimeout(function () { self.align.call(self, self.currentTarget); }, 10);
+				self.align(self.currentTarget).delay(self.conf.showDelay).fadeTo(self.animSpeed, 1);
+			}
+			else self.align(self.currentTarget).stop(true).fadeTo(self.animSpeed, 1);
+		}
 	};
 
 
