@@ -36,19 +36,19 @@
 
 <h2>Demo</h2>
 <div class="buttons">
-	<button class="btn btn-primary" id="button1" title="Button 1 tooltip text">default position, convert title to tooltip</button>
-	<button class="btn btn-danger" id="button2">default position, custom text</button>
-	<button class="btn btn-info" id="button3">default position, html tooltip</button>
-	<button class="btn btn-inverse" id="button4" title="On the top-right">position top-right with no animation</button>
-	<button class="btn btn-warning" id="button5" title="On the bottom-left">position bottom-left, custom css class</button>
-	<button class="btn btn-danger" id="button6" title="On the right">position right, html content, long animation</button>
-	<button class="btn btn-info" id="button7" title="On the top, show on click">position top, show on click</button>
-	<button class="btn btn-success" id="button8" title="On the top, dont hide on tooltip hover">position top, don't hide when hovering the tooltip</button>
-	<button class="btn btn-primary" id="button9" title="On the right, show with delay">position right, show with 1000ms delay</button>
-	<button class="btn btn-inverse" id="button10">position top, html content, don't hide on tooltip hover</button>
-	<button class="btn btn-success" id="button11">position left-top, html content</button>
-	<button class="btn btn-warning" id="button12">position left-bottom, html content, force position</button>
-	<button class="btn btn-large lazy" data-title="added to body">added to "body" (click the button to clone)</button>
+	<button class="has-tooltip btn btn-primary" id="button1" title="Button 1 tooltip text">default position, convert title to tooltip</button>
+	<button class="has-tooltip btn btn-danger" id="button2">default position, custom text</button>
+	<button class="has-tooltip btn btn-info" id="button3">default position, html tooltip</button>
+	<button class="has-tooltip btn btn-inverse" id="button4" title="On the top-right">position top-right with no animation</button>
+	<button class="has-tooltip btn btn-warning" id="button5" title="On the bottom-left">position bottom-left, custom css class</button>
+	<button class="has-tooltip btn btn-danger" id="button6" title="On the right">position right, html content, long animation</button>
+	<button class="has-tooltip btn btn-info" id="button7" title="On the top, show on click">position top, show on click</button>
+	<button class="has-tooltip btn btn-success" id="button8" title="On the top, dont hide on tooltip hover">position top, don't hide when hovering the tooltip</button>
+	<button class="has-tooltip btn btn-primary" id="button9" title="On the right, show with delay">position right, show with 1000ms delay</button>
+	<button class="has-tooltip btn btn-inverse" id="button10">position top, html content, don't hide on tooltip hover</button>
+	<button class="has-tooltip btn btn-success" id="button11">position left-top, html content</button>
+	<button class="has-tooltip btn btn-warning" id="button12">position left-bottom, html content, force position</button>
+	<button class="has-tooltip btn btn-large lazy" data-title="added to body">added to "body" (click the button to clone)</button>
 </div>
 
 
@@ -119,30 +119,31 @@
 
 
 
-<script src="js/jquery.min.js"></script>
-<script src="js/jquery.tooltip.js"></script>
+<script src="js/tooltip.js"></script>
 <script>
-$(function(){
-	var html1 = '<h2>Tooltip title</h2><p>Tooltip description</p>',
-		html2 = '<h2>Tooltip title</h2><p>A very loong tooltip description text<br> with multiple lines<br>and some links: <a href="#">Link</a></p>';
+window.Tooltip();
 
-    $('#button1').tooltip();																		// convert "title" attribute to a tooltip
-    $('#button2').tooltip('Button 2 tooltip text');													// show custom text
-    $('#button3').tooltip(html1);																	// show html
-    $('#button4').tooltip({ position: 'tr', animate: 0 });											// position top-right, no animation
-    $('#button5').tooltip({ position: 'bl', cls: 'custom-tooltip' });								// position bottom-left, custom css class
-    $('#button6').tooltip({ position: 'r', animate: 1000, text: html1, cls: 'big-tooltip' });		// position right, html content, long animation
-    $('#button7').tooltip({ position: 't', trigger: 'click' });										// position top, show on click
-    $('#button8').tooltip({ position: 't', dontHideOnTooltipHover: true });
-    $('#button9').tooltip({ position: 'r', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', showDelay: 1000 });// position left, show with 1000ms delay
-    $('#button10').tooltip({ position: 't', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
-    $('#button11').tooltip({ position: 'lt', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
-    $('#button12').tooltip({ position: 'lb', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', forcePosition: true });
+// $(function(){
+// 	var html1 = '<h2>Tooltip title</h2><p>Tooltip description</p>',
+// 		html2 = '<h2>Tooltip title</h2><p>A very loong tooltip description text<br> with multiple lines<br>and some links: <a href="#">Link</a></p>';
 
-	$('body').tooltip({ selector: '.lazy' });
+//     $('#button1').tooltip();																		// convert "title" attribute to a tooltip
+//     $('#button2').tooltip('Button 2 tooltip text');													// show custom text
+//     $('#button3').tooltip(html1);																	// show html
+//     $('#button4').tooltip({ position: 'tr', animate: 0 });											// position top-right, no animation
+//     $('#button5').tooltip({ position: 'bl', cls: 'custom-tooltip' });								// position bottom-left, custom css class
+//     $('#button6').tooltip({ position: 'r', animate: 1000, text: html1, cls: 'big-tooltip' });		// position right, html content, long animation
+//     $('#button7').tooltip({ position: 't', trigger: 'click' });										// position top, show on click
+//     $('#button8').tooltip({ position: 't', dontHideOnTooltipHover: true });
+//     $('#button9').tooltip({ position: 'r', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', showDelay: 1000 });// position left, show with 1000ms delay
+//     $('#button10').tooltip({ position: 't', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
+//     $('#button11').tooltip({ position: 'lt', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip' });
+//     $('#button12').tooltip({ position: 'lb', dontHideOnTooltipHover: true, text: html2, cls: 'big-tooltip', forcePosition: true });
 
-	$('body').on('click', '.btn.lazy', function() { $(this).clone().insertAfter(this); });			// clone button on click
-});
+// 	$('body').tooltip({ selector: '.lazy' });
+
+// 	$('body').on('click', '.btn.lazy', function() { $(this).clone().insertAfter(this); });			// clone button on click
+// });
 </script>
 </body>
 </html>
