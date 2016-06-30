@@ -9,29 +9,31 @@
 (function (window) {
 	'use strict';
 
-	var defaults = {
-		text: '',
-		cls: '',
-		position: 'default',
-		forcePosition: false,
-		animate: false,
-		trigger: 'hover',
-		showDelay: 200,
-		dontHideOnTooltipHover: false
-	};
+	var
+		defaults = {
+			text: '',
+			cls: '',
+			position: 'default',
+			forcePosition: false,
+			animate: false,
+			trigger: 'hover',
+			showDelay: 200,
+			dontHideOnTooltipHover: false
+		},
+		eventHandler;
 
 
 	var Tooltip = function (cfg) {
 		if (!(this instanceof Tooltip)) return new Tooltip(cfg);
-
-		this.cfg = cfg || {};
-		this.init();
-		return this;
+		this.cfg = Object.assign({}, defaults, cfg || {});
+		return this.init();
 	};
 
 
 	Tooltip.prototype.init = function () {
-		document.addEventListener('mouseover', this.onMouseOver.bind(this), false);
+		eventHandler = this.onMouseOver.bind(this);
+		document.addEventListener('mouseover', eventHandler, false);
+		return this;
 	};
 
 
@@ -41,7 +43,8 @@
 	};
 
 	Tooltip.prototype.show = function (el) {
-		console.log(el);
+		var text = el.title || el.dataset.title || '';
+		console.log(el, text);
 	};
 
 
@@ -54,6 +57,7 @@
 
 
 	Tooltip.prototype.destroy = function () {
+		if (eventHandler) document.removeEventListener('mouseover', eventHandler);
 	};
 
 
