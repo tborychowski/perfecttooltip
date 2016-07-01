@@ -4,8 +4,8 @@
   min-width: 40px;
   white-space: nowrap;
   cursor: default;
-  left: -1000;
-  top: -1000;
+  left: -1000px;
+  top: -1000px;
   padding: 5px 10px;
   font: bold 12px helvetica, tahoma, sans-serif;
   text-align: left;
