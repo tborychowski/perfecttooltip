@@ -22,20 +22,32 @@
 			targetDistance: 7,
 			dontHideOnTooltipHover: false
 		},
-		eventHandler, hideHandler;
+		winOff = {
+			width: window.innerWidth,
+			height: window.innerHeight,
+			scrollLeft: window.scrollX,
+			scrollTop: window.scrollY
+		},
+		eventHandler,
+		hideHandler,
+		getOffsets = function (el) {
+			var off = el.getBoundingClientRect ? el.getBoundingClientRect() : {};
+			return {
+				left: off.left || 0,
+				top: off.top || 0,
+				width: off.width || 0,
+				height: off.height || 0,
+				right: off.left + off.width,
+				bottom: off.top + off.height
+			};
+		},
 
-
-	function getOffsets (el) {
-		var off = el.getBoundingClientRect ? el.getBoundingClientRect() : {};
-		return {
-			left: off.left || 0,
-			top: off.top || 0,
-			width: off.width || 0,
-			height: off.height || 0,
-			right: off.left + off.width,
-			bottom: off.top + off.height
-		};
-	}
+		onTop = function (targetOff, tooltipOff, dist) { return targetOff.top - dist - tooltipOff.height + winOff.scrollTop; },
+		onBottom = function (targetOff, tooltipOff, dist) { return targetOff.bottom + dist + winOff.scrollTop; },
+		toRight = function (targetOff, tooltipOff, dist) { return targetOff.right + dist + winOff.scrollLeft; },
+		toLeft = function (targetOff, tooltipOff, dist) { return targetOff.left - dist - tooltipOff.width + winOff.scrollLeft; },
+		inCenter = function (targetOff, tooltipOff) { return targetOff.left + (targetOff.width - tooltipOff.width) / 2 + winOff.scrollLeft; },
+		inMiddle = function (targetOff, tooltipOff) { return targetOff.top + (targetOff.height - tooltipOff.height) / 2 + winOff.scrollTop; };
 
 
 
@@ -94,42 +106,60 @@
 	};
 
 
+
+
+
 	Tooltip.prototype.align = function () {
-		var t = -1000, l = -1000;
+		var t = -1000, l = -1000, pos = 'b';
 		var targetOff = getOffsets(this.target);
 		var tooltipOff = getOffsets(this.tooltip);
-		var winOff = {
-			width: window.innerWidth,
-			height: window.innerHeight,
-			scrollLeft: window.scrollX,
-			scrollTop: window.scrollY
-		};
-		var pos = this.cfg.position.substr(0, 1);
 
 		var posHandler = {
 			top: function () {
-				t = targetOff.top - this.cfg.targetDistance - tooltipOff.height;
-				l = targetOff.left + (targetOff.width - tooltipOff.width) / 2;
+				t = onTop(targetOff, tooltipOff, this.cfg.targetDistance);
+				l = inCenter(targetOff, tooltipOff);
 			},
 			bottom: function () {
-				t = targetOff.bottom + this.cfg.targetDistance;
-				l = targetOff.left + (targetOff.width - tooltipOff.width) / 2;
+				t = onBottom(targetOff, tooltipOff, this.cfg.targetDistance);
+				l = inCenter(targetOff, tooltipOff);
 			},
 			left: function () {
-				t = targetOff.top + (targetOff.height - tooltipOff.height) / 2;
-				l = targetOff.left - this.cfg.targetDistance - tooltipOff.width;
+				t = inMiddle(targetOff, tooltipOff);
+				l = toLeft(targetOff, tooltipOff, this.cfg.targetDistance);
 			},
 			right: function () {
-				t = targetOff.top + (targetOff.height - tooltipOff.height) / 2;
-				l = targetOff.right + this.cfg.targetDistance;
+				t = inMiddle(targetOff, tooltipOff);
+				l = toRight(targetOff, tooltipOff, this.cfg.targetDistance);
 			}
 		};
 
 		posHandler[this.cfg.position].call(this);
-		t += winOff.scrollTop;
-		l += winOff.scrollLeft;
 
-		// check too far to the right/left/top/bottom & realign
+
+		// too far to the top - put tooltip below element
+		if (t < 0) {
+			t = onBottom(targetOff, tooltipOff, this.cfg.targetDistance);
+			pos = 'b';
+		}
+		else if (t + tooltipOff.height > winOff.height + winOff.scrollTop) {
+			t = onTop(targetOff, tooltipOff, this.cfg.targetDistance);
+			pos = 't';
+		}
+
+		// too far to the left - put tooltip on the start of screen
+		if (l < this.screenMargin + winOff.scrollLeft) {
+			l = this.screenMargin + winOff.scrollLeft;
+			pos += 'r';
+		}
+
+		// too far to the right - put tooltip to the left of the target
+		if (l + tooltipOff.width + this.screenMargin - winOff.scrollLeft > winOff.width) {
+			l = winOff.width - tooltipOff.width - this.screenMargin + winOff.scrollLeft;
+			pos += 'l';
+
+			// keep tooltip on target
+			if (l < targetOff.left - tooltipOff.width) l = targetOff.left - tooltipOff.width;
+		}
 
 
 		this.tooltip.style.top = t + 'px';
